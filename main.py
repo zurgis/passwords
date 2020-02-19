@@ -51,10 +51,25 @@ while True:
 flag = False
 
 for value in template.values():
-    for k, v in value.items():
-        if k == name_app:
-            v.append({'login': login, 'password': password})
-            flag = True
+    for key, value in value.items():
+        if key == name_app:
+            for i in value:
+                if i['login'] == login:
+                    accept = input('You want change to password? yes/no ')
+                    if accept == 'yes':
+                        i['password'] = password
+                        flag = True
+                        break
+                    elif accept == 'no':
+                        flag = True
+                        break
+                    else:
+                        print('Incorrect value. Password not change')
+                        flag = True
+                        break
+            else:
+                value.append({'login': login, 'password': password})
+                flag = True
 
 if not flag:
     template[num_pass] = {name_app: [{'login': login, 'password': password}]}
