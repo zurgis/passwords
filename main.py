@@ -48,28 +48,35 @@ while True:
     else:
         break               
 
-flag = False
+def s_or_c(search_or_create, i):
+    global flag
 
+    if search_or_create == 'search':
+        flag = True
+        print(i['password'])
+    elif search_or_create == 'create':
+        accept = input('You want change to password? yes/no ')
+        if accept == 'yes':
+            i['password'] = password
+            flag = True
+        elif accept == 'no':
+            flag = True
+        else:
+            print('Incorrect value. Password not change')
+            flag = True
+
+search_or_create = input('You want create or search password? create/search ')
+flag = False
 for value in template.values():
     for key, value in value.items():
         if key == name_app:
             for i in value:
                 if i['login'] == login:
-                    accept = input('You want change to password? yes/no ')
-                    if accept == 'yes':
-                        i['password'] = password
-                        flag = True
-                        break
-                    elif accept == 'no':
-                        flag = True
-                        break
-                    else:
-                        print('Incorrect value. Password not change')
-                        flag = True
-                        break
+                    s_or_c(search_or_create, i)
             else:
-                value.append({'login': login, 'password': password})
-                flag = True
+                if not flag:
+                    value.append({'login': login, 'password': password})
+                    flag = True
 
 if not flag:
     template[num_pass] = {name_app: [{'login': login, 'password': password}]}
